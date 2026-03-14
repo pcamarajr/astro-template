@@ -1,0 +1,98 @@
+---
+import "@/styles/global.css";
+import { getLocale, t } from "@/i18n";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const locale = getLocale(Astro.currentLocale);
+const { title = t(locale, "site.title"), description = t(locale, "site.description") } =
+  Astro.props;
+const fullTitle =
+  title === t(locale, "site.title") ? title : `${title} — ${t(locale, "site.title")}`;
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{fullTitle}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <nav class="nav" aria-label="Main navigation">
+          <a href={`/${locale}/`} class="nav-brand">{t(locale, 'site.title')}</a>
+          <ul class="nav-links" role="list">
+            <li><a href={`/${locale}/`}>{t(locale, 'nav.home')}</a></li>
+            <li><a href={`/${locale}/blog/`}>{t(locale, 'nav.blog')}</a></li>
+            <li><a href={`/${locale}/about/`}>{t(locale, 'nav.about')}</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="site-main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>&copy; {new Date().getFullYear()} {t(locale, 'site.title')}</p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    border-bottom: var(--border);
+    padding-block: var(--space-4);
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .nav-brand {
+    font-weight: 600;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: var(--space-6);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-links a {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  .nav-links a:hover {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .site-main {
+    padding-block: var(--space-12);
+  }
+
+  .site-footer {
+    border-top: var(--border);
+    padding-block: var(--space-8);
+    color: var(--color-text-subtle);
+    font-size: var(--font-size-sm);
+  }
+</style>

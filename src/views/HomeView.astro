@@ -1,0 +1,70 @@
+---
+import { getLocale, t } from "@/i18n";
+
+const locale = getLocale(Astro.currentLocale);
+---
+
+<div class="container">
+  <section class="hero">
+    <h1>Welcome to Astro Template</h1>
+    <p class="hero-description">
+      A minimal, opinionated Astro 6 starter for the
+      <a href="https://github.com/pcamarajr/content-stack">content-stack</a> ecosystem.
+      Clone it, extend it, make it yours.
+    </p>
+    <div class="hero-actions">
+      <a href={`/${locale}/blog/`} class="btn btn-primary">{t(locale, 'nav.blog')}</a>
+      <a href={`/${locale}/about/`} class="btn btn-ghost">{t(locale, 'nav.about')}</a>
+    </div>
+  </section>
+</div>
+
+<style>
+  .hero {
+    max-width: var(--content-width);
+    padding-block: var(--space-16);
+  }
+
+  .hero h1 {
+    font-size: var(--font-size-4xl);
+    margin-bottom: var(--space-4);
+  }
+
+  .hero-description {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-8);
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+
+  .btn:hover {
+    text-decoration: none;
+    opacity: 0.85;
+  }
+
+  .btn-primary {
+    background-color: var(--color-accent);
+    color: #ffffff;
+  }
+
+  .btn-ghost {
+    border: var(--border);
+    color: var(--color-text);
+  }
+</style>

@@ -1,0 +1,105 @@
+---
+import { getCollection } from "astro:content";
+import { getLocale, t } from "@/i18n";
+
+const locale = getLocale(Astro.currentLocale);
+
+const posts = (
+  await getCollection("blog", ({ id, data }) => {
+    return id.startsWith(`${locale}/`) && !data.draft;
+  })
+).sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+---
+
+<div class="container">
+  <h1>{t(locale, 'blog.all_posts')}</h1>
+
+  {posts.length === 0 ? (
+    <p class="empty">No posts yet.</p>
+  ) : (
+    <ul class="post-list" role="list">
+      {posts.map((post) => {
+        const slug = post.id.replace(`${locale}/`, '');
+        return (
+          <li class="post-item">
+            <article>
+              <time class="post-date" datetime={post.data.publishDate.toISOString()}>
+                {post.data.publishDate.toLocaleDateString(locale === 'pt-br' ? 'pt-BR' : 'en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </time>
+              <h2 class="post-title">
+                <a href={`/${locale}/blog/${slug}/`}>{post.data.title}</a>
+              </h2>
+              <p class="post-description">{post.data.description}</p>
+              <a href={`/${locale}/blog/${slug}/`} class="read-more">
+                {t(locale, 'blog.read_more')} →
+              </a>
+            </article>
+          </li>
+        );
+      })}
+    </ul>
+  )}
+</div>
+
+<style>
+  h1 {
+    margin-bottom: var(--space-8);
+  }
+
+  .post-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .post-item {
+    border-bottom: var(--border);
+    padding-bottom: var(--space-8);
+  }
+
+  .post-item:last-child {
+    border-bottom: none;
+  }
+
+  .post-date {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-subtle);
+    margin-bottom: var(--space-2);
+  }
+
+  .post-title {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-2);
+  }
+
+  .post-title a {
+    color: var(--color-text);
+  }
+
+  .post-title a:hover {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .post-description {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-3);
+  }
+
+  .read-more {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+  }
+
+  .empty {
+    color: var(--color-text-muted);
+  }
+</style>

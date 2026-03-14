@@ -1,0 +1,87 @@
+---
+import { type CollectionEntry, render } from "astro:content";
+import { getLocale, t } from "@/i18n";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const locale = getLocale(Astro.currentLocale);
+const { Content } = await render(post);
+---
+
+<div class="container">
+  <article class="prose">
+    <header class="post-header">
+      <p class="back-link">
+        <a href={`/${locale}/blog/`}>← {t(locale, 'blog.all_posts')}</a>
+      </p>
+      <h1>{post.data.title}</h1>
+      <time class="post-date" datetime={post.data.publishDate.toISOString()}>
+        {t(locale, 'blog.published')}
+        {post.data.publishDate.toLocaleDateString(locale === 'pt-br' ? 'pt-BR' : 'en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })}
+      </time>
+      {post.data.tags.length > 0 && (
+        <ul class="tags" role="list">
+          {post.data.tags.map((tag) => (
+            <li class="tag">{tag}</li>
+          ))}
+        </ul>
+      )}
+    </header>
+
+    <div class="post-body">
+      <Content />
+    </div>
+  </article>
+</div>
+
+<style>
+  .post-header {
+    margin-bottom: var(--space-8);
+  }
+
+  .back-link {
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-6);
+  }
+
+  .post-header h1 {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-3);
+  }
+
+  .post-date {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-subtle);
+    margin-bottom: var(--space-4);
+  }
+
+  .tags {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .tag {
+    font-size: var(--font-size-xs);
+    background-color: var(--color-bg-subtle);
+    border: var(--border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-1) var(--space-2);
+    color: var(--color-text-muted);
+  }
+
+  .post-body {
+    line-height: var(--leading-loose);
+  }
+</style>

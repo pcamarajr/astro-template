@@ -1,0 +1,28 @@
+---
+import { getLocale } from "@/i18n";
+
+const locale = getLocale(Astro.currentLocale);
+---
+
+<div class="container">
+  <article class="prose">
+    <h1>About</h1>
+    <p>
+      This is a sample About page. Replace this content with your own project description,
+      team information, or mission statement.
+    </p>
+    <p>
+      This template is part of the
+      <a href="https://github.com/pcamarajr/content-stack">content-stack</a> ecosystem —
+      a collection of opinionated Astro plugins and starters designed to help you build
+      content-driven sites quickly.
+    </p>
+    <h2>Stack</h2>
+    <ul>
+      <li>Astro 6 — static output</li>
+      <li>Custom CSS with design tokens</li>
+      <li>i18n: English + Portuguese (Brazil)</li>
+      <li>Biome for linting and formatting</li>
+    </ul>
+  </article>
+</div>
