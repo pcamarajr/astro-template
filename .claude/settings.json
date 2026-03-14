@@ -1,0 +1,6 @@
+{
+  "enabledPlugins": {
+    "astro-lsp@content-stack": true,
+    "astro-builder@content-stack": true
+  }
+}
